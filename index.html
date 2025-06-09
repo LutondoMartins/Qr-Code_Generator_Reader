@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator & Reader</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Removido <script src="js/qr-scanner.min.js"> pois será carregado como módulo -->
+    <style>
+        /* Estilos mantidos exatamente como no original */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0% , #764ba2 100%);
+        }
+        
+        .dark .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0% , #16213e 50%, #0f3460 100%);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(.33);
+            }
+            80%, 100% {
+                opacity: 0;
+            }
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .dark .custom-shadow {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        #qr-type {
+            color: inherit;
+        }
+    </style>
+</head>
+<body class="min-h-screen transition-all duration-500 gradient-bg">
+    <!-- HTML do layout mantido exatamente como no original -->
+    <div class="min-h-screen p-4 md:p-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center glass-effect">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-white">QR Generator</h1>
+                    <p class="text-white/70 text-sm">Gere e leia códigos QR facilmente</p>
+                </div>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <div class="flex items-center space-x-3">
+                <span class="text-white/70 text-sm">🌙</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle" aria-label="Alternar tema claro/escuro">
+                    <span class="slider"></span>
+                </label>
+                <span class="text-white/70 text-sm">☀️</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-6xl mx-auto">
+            <!-- Tab Navigation -->
+            <div class="flex space-x-1 mb-8">
+                <button id="generate-tab" class="tab-btn active flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 glass-effect text-white" aria-label="Aba para gerar QR Code">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
+                    </svg>
+                    Gerar QR Code
+                </button>
+                <button id="read-tab" class="tab-btn flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 text-white/70 hover:text-white" aria-label="Aba para ler QR Code">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Ler QR Code
+                </button>
+            </div>
+
+            <!-- Generator Section -->
+            <div id="generator-section" class="tab-content">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Section -->
+                    <div class="space-y-6">
+                        <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
+                            <h3 class="text-xl font-semibold text-white mb-4">Configurações</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-type">Tipo de Conteúdo</label>
+                                    <select id="qr-type" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" aria-label="Selecionar tipo de conteúdo para o QR Code">
+                                        <option value="text">Texto</option>
+                                        <option value="url">URL</option>
+                                        <option value="email">Email</option>
+                                        <option value="phone">Telefone</option>
+                                        <option value="wifi">WiFi</option>
+                                    </select>
+                                </div>
+                                
+                                <div id="text-input" class="input-group">
+                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-text">Texto</label>
+                                    <textarea id="qr-text" rows="4" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all resize-none" placeholder="Digite seu texto aqui..." aria-label="Digite o texto para gerar o QR Code"></textarea>
+                                </div>
+                                
+                                <div id="url-input" class="input-group hidden">
+                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-url">URL</label>
+                                    <input type="url" id="qr-url" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="https://exemplo.com" aria-label="Digite a URL para gerar o QR Code">
+                                </div>
+                                
+                                <div id="email-input" class="input-group hidden">
+                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-email">Email</label>
+                                    <input type="email" id="qr-email" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="exemplo@email.com" aria-label="Digite o e-mail para gerar o QR Code">
+                                </div>
+                                
+                                <div id="phone-input" class="input-group hidden">
+                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-phone">Telefone</label>
+                                    <input type="tel" id="qr-phone" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="+55 11 99999-9999" aria-label="Digite o telefone para gerar o QR Code">
+                                </div>
+                                
+                                <div id="wifi-input" class="input-group hidden space-y-3">
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-ssid">Nome da Rede (SSID)</label>
+                                        <input type="text" id="wifi-ssid" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="MinhaRede" aria-label="Digite o nome da rede WiFi">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-password">Senha</label>
+                                        <input type="password" id="wifi-password" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="senha123" aria-label="Digite a senha da rede WiFi">
+                                    </div>
+                                    <div>
+                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-security">Tipo de Segurança</label>
+                                        <select id="wifi-security" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" aria-label="Selecionar tipo de segurança da rede WiFi">
+                                            <option value="WPA">WPA/ WPA2</option>
+                                            <option value="WEP">WEP</option>
+                                            <option value="nopass">Sem senha</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <button id="generate-btn" class="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg" aria-label="Gerar QR Code">
+                                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
+                                    </svg>
+                                    Gerar QR Code
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code Display -->
+                    <div class="space-y-6">
+                        <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
+                            <h3 class="text-xl font-semibold text-white mb-4">QR Code Gerado</h3>
+                            
+                            <div id="qr-display" class="bg-white rounded-xl p-6 text-center min-h-[300px] flex items-center justify-center">
+                                <div class="text-gray-400">
+                                    <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
+                                    </svg>
+                                    <p class="text-sm">Seu QR Code aparecerá aqui</p>
+                                </div>
+                            </div>
+                            
+                            <div id="qr-actions" class="mt-4 space-y-3 hidden">
+                                <button id="download-btn" class="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Baixar QR Code como PNG">
+                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                    Baixar PNG
+                                </button>
+                                <button id="copy-btn" class="w-full py-2 px-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Copiar imagem do QR Code">
+                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Copiar Imagem
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reader Section -->
+            <div id="reader-section" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto">
+                    <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">Ler QR Code</h3>
+                        
+                        <div class="space-y-6">
+                            <!-- Camera Reader -->
+                            <div>
+                                <h4 class="text-white/80 font-medium mb-3">📷 Usar Câmera</h4>
+                                <div class="relative">
+                                    <video id="video-preview" class="w-full rounded-xl bg-black hidden" autoplay aria-label="Visualização da câmera para leitura de QR Code"></video>
+                                    <div id="camera-placeholder" class="w-full h-64 bg-white/10 rounded-xl border-2 border-dashed border-white/30 flex items-center justify-center">
+                                        <div class="text-center">
+                                            <svg class="w-12 h-12 mx-auto mb-3 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            <p class="text-white/70">Clique para ativar a câmera</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="start-camera" class="w-full mt-3 py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Iniciar ou parar câmera">
+                                    Iniciar Câmera
+                                </button>
+                            </div>
+                            
+                            <!-- File Upload -->
+                            <div class="border-t border-white/20 pt-6">
+                                <h4 class="text-white/80 font-medium mb-3">📁 Carregar Imagem</h4>
+                                <div class="relative">
+                                    <input type="file" id="file-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" aria-label="Selecionar imagem para leitura de QR Code">
+                                    <div class="w-full h-32 bg-white/10 rounded-xl border-2 border-dashed border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300">
+                                        <div class="text-center">
+                                            <svg class="w-8 h-8 mx-auto mb-2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                            </svg>
+                                            <p class="text-white/70 text-sm">Arraste uma imagem ou clique para selecionar</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Result -->
+                            <div id="scan-result" class="hidden bg-white/10 rounded-xl p-4 border border-white/20">
+                                <h4 class="text-white font-medium mb-2">Resultado:</h4>
+                                <div id="result-content" class="bg-white/5 rounded-lg p-3 text-white/90 font-mono text-sm break-all" aria-live="polite"></div>
+                                <button id="copy-result" class="mt-3 py-1 px-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded transition-all duration-300" aria-label="Copiar resultado do QR Code">
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+    // Importa a biblioteca QrScanner
+    import QrScanner from './js/qr-scanner.min.js';
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Check for saved theme preference
+    const savedTheme = JSON.parse(localStorage.getItem('darkMode') || 'false');
+    if (savedTheme) {
+        body.classList.add('dark');
+        themeToggle.checked = true;
+    }
+    
+    themeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark');
+        localStorage.setItem('darkMode', JSON.stringify(themeToggle.checked));
+    });
+    
+    // Tab Functionality
+    const generateTab = document.getElementById('generate-tab');
+    const readTab = document.getElementById('read-tab');
+    const generatorSection = document.getElementById('generator-section');
+    const readerSection = document.getElementById('reader-section');
+    
+    generateTab.addEventListener('click', () => {
+        generateTab.classList.add('active', 'glass-effect', 'text-white');
+        generateTab.classList.remove('text-white/70');
+        readTab.classList.remove('active', 'glass-effect', 'text-white');
+        readTab.classList.add('text-white/70');
+        generatorSection.classList.remove('hidden');
+        readerSection.classList.add('hidden');
+    });
+    
+    readTab.addEventListener('click', () => {
+        readTab.classList.add('active', 'glass-effect', 'text-white');
+        readTab.classList.remove('text-white/70');
+        generateTab.classList.remove('active', 'glass-effect', 'text-white');
+        generateTab.classList.add('text-white/70');
+        readerSection.classList.remove('hidden');
+        generatorSection.classList.add('hidden');
+    });
+    
+    // QR Type Selection
+    const qrType = document.getElementById('qr-type');
+    const inputGroups = document.querySelectorAll('.input-group');
+    
+    qrType.addEventListener('change', () => {
+        inputGroups.forEach(group => group.classList.add('hidden'));
+        document.getElementById(`${qrType.value}-input`).classList.remove('hidden');
+    });
+    
+    // QR Code Generation
+    const generateBtn = document.getElementById('generate-btn');
+    const qrDisplay = document.getElementById('qr-display');
+    const qrActions = document.getElementById('qr-actions');
+    
+    function getQRContent() {
+        const type = qrType.value;
+        switch(type) {
+            case 'text':
+                return document.getElementById('qr-text').value;
+            case 'url':
+                return document.getElementById('qr-url').value;
+            case 'email':
+                return `mailto:${document.getElementById('qr-email').value}`;
+            case 'phone':
+                return `tel:${document.getElementById('qr-phone').value}`;
+            case 'wifi':
+                const ssid = document.getElementById('wifi-ssid').value;
+                const password = document.getElementById('wifi-password').value;
+                const security = document.getElementById('wifi-security').value;
+                return `WIFI:T:${security};S:${ssid};P:${password};;`;
+            default:
+                return '';
+        }
+    }
+    
+    function validateInput(type, value) {
+        if (!value.trim()) return false;
+        if (type === 'url') {
+            return /^(https?:\/\/)/i.test(value);
+        }
+        if (type === 'email') {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        }
+        return true;
+    }
+    
+    generateBtn.addEventListener('click', () => {
+        const content = getQRContent();
+        if (!content.trim()) {
+            showError('Por favor, preencha o campo necessário!');
+            console.warn('Erro: Campo de entrada vazio');
+            return;
+        }
+        if (!validateInput(qrType.value, content)) {
+            showError('Formato inválido para o tipo selecionado!');
+            console.warn('Erro: Formato inválido para', qrType.value, 'com valor:', content);
+            return;
+        }
+        
+        try {
+            const resetLoading = showLoading(generateBtn, 'Gerando...');
+            
+            // Verifica se a biblioteca QRCode está carregada
+            if (typeof QRCode === 'undefined') {
+                showError('Erro: Biblioteca QRCode não carregada.');
+                console.error('QRCode library not found. Check CDN or local file.');
+                resetLoading();
+                return;
+            }
+            
+            // Cria um contêiner para o QR code
+            qrDisplay.innerHTML = '';
+            const qrContainer = document.createElement('div');
+            qrContainer.style.display = 'inline-block';
+            qrDisplay.appendChild(qrContainer);
+            
+            console.log('Gerando QR Code para:', content);
+            // Usa a API do qrcodejs
+            new QRCode(qrContainer, {
+                text: content,
+                width: 256,
+                height: 256,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            // Aguarda o carregamento completo da imagem gerada
+            const qrImage = qrContainer.querySelector('img');
+            if (!qrImage) {
+                showError('Erro: Imagem do QR Code não foi gerada.');
+                console.error('No QR code image found in container.');
+                resetLoading();
+                return;
+            }
+            
+            qrImage.onload = () => {
+                // Converte o QR code para canvas para download e cópia
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 256;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff'; // Garante fundo branco
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(qrImage, 0, 0, 256, 256);
+                
+                // Substitui o contêiner pelo canvas
+                qrDisplay.innerHTML = '';
+                qrDisplay.appendChild(canvas);
+                qrActions.classList.remove('hidden');
+                showSuccess('QR Code gerado com sucesso!');
+                console.log('QR Code gerado com sucesso');
+                
+                // Download
+                document.getElementById('download-btn').onclick = () => {
+                    const link = document.createElement('a');
+                    link.download = 'qrcode.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    console.log('QR Code baixado como PNG');
+                };
+                
+                // Copiar
+                document.getElementById('copy-btn').onclick = async () => {
+                    try {
+                        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                        await navigator.clipboard.write([
+                            new ClipboardItem({ 'image/png': blob })
+                        ]);
+                        showSuccess('Imagem copiada para a área de transferência!');
+                        console.log('Imagem do QR Code copiada');
+                    } catch (err) {
+                        showError('Erro ao copiar imagem');
+                        console.error('Erro ao copiar imagem:', err);
+                    }
+                };
+                
+                resetLoading();
+            };
+            
+            qrImage.onerror = () => {
+                showError('Erro ao carregar imagem do QR Code.');
+                console.error('Failed to load QR code image.');
+                resetLoading();
+            };
+            
+        } catch (err) {
+            showError('Erro ao gerar QR Code.');
+            console.error('Erro na geração do QR Code:', err);
+            resetLoading();
+        }
+    });
+    
+    // QR Code Reader
+    const startCameraBtn = document.getElementById('start-camera');
+    const videoPreview = document.getElementById('video-preview');
+    const cameraPlaceholder = document.getElementById('camera-placeholder');
+    const fileInput = document.getElementById('file-input');
+    const scanResult = document.getElementById('scan-result');
+    const resultContent = document.getElementById('result-content');
+    const copyResultBtn = document.getElementById('copy-result');
+    
+    let qrScanner = null;
+    
+    function showResult(result) {
+        resultContent.textContent = result.data;
+        scanResult.classList.remove('hidden');
+        
+        copyResultBtn.onclick = async () => {
+            try {
+                await navigator.clipboard.writeText(result.data);
+                const originalText = copyResultBtn.textContent;
+                copyResultBtn.textContent = 'Copiado!';
+                setTimeout(() => copyResultBtn.textContent = originalText, 2000);
+                console.log('Resultado do QR Code copiado:', result.data);
+            } catch (err) {
+                showError('Erro ao copiar resultado.');
+                console.error('Erro ao copiar resultado:', err);
+            }
+        };
+    }
+    
+    startCameraBtn.addEventListener('click', async () => {
+        try {
+            if (qrScanner) {
+                qrScanner.stop();
+                qrScanner.destroy();
+                qrScanner = null;
+                if (videoPreview.srcObject) {
+                    const tracks = videoPreview.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    videoPreview.srcObject = null;
+                }
+                videoPreview.classList.add('hidden');
+                cameraPlaceholder.classList.remove('hidden');
+                startCameraBtn.textContent = 'Iniciar Câmera';
+                console.log('Câmera parada');
+                return;
+            }
+            
+            // Verifica suporte para WebRTC
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showError('Erro: Seu navegador não suporta acesso à câmera.');
+                console.error('WebRTC não suportado.');
+                return;
+            }
+            
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            });
+            videoPreview.srcObject = stream;
+            videoPreview.classList.remove('hidden');
+            cameraPlaceholder.classList.add('hidden');
+            startCameraBtn.textContent = 'Parar Câmera';
+            console.log('Câmera iniciada');
+            
+            // Inicializa o scanner
+            qrScanner = new QrScanner(videoPreview, result => {
+                showResult(result);
+                qrScanner.stop();
+                qrScanner.destroy();
+                qrScanner = null;
+                videoPreview.classList.add('hidden');
+                cameraPlaceholder.classList.remove('hidden');
+                startCameraBtn.textContent = 'Iniciar Câmera';
+                if (videoPreview.srcObject) {
+                    const tracks = videoPreview.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    videoPreview.srcObject = null;
+                }
+                showSuccess('QR Code lido com sucesso!');
+                console.log('QR Code lido:', result.data);
+            }, {
+                returnDetailedScanResult: true,
+                highlightScanRegion: true,
+                highlightCodeOutline: false, // Desativado para evitar erros de renderização
+                maxScansPerSecond: 10,
+                onDecodeError: (error) => {
+                    console.warn('Erro ao decodificar QR Code:', error);
+                }
+            });
+            
+            // Verifica se há câmeras disponíveis
+            QrScanner.hasCamera().then(hasCamera => {
+                if (!hasCamera) {
+                    showError('Nenhuma câmera detectada.');
+                    console.error('Nenhuma câmera detectada.');
+                    qrScanner.stop();
+                    qrScanner.destroy();
+                    qrScanner = null;
+                    if (videoPreview.srcObject) {
+                        videoPreview.srcObject.getTracks().forEach(track => track.stop());
+                        videoPreview.srcObject = null;
+                    }
+                    videoPreview.classList.add('hidden');
+                    cameraPlaceholder.classList.remove('hidden');
+                    startCameraBtn.textContent = 'Iniciar Câmera';
+                    return;
+                }
+                qrScanner.start().catch(err => {
+                    showError('Erro ao iniciar o scanner de QR Code.');
+                    console.error('Erro ao iniciar QR scanner:', err);
+                    if (videoPreview.srcObject) {
+                        videoPreview.srcObject.getTracks().forEach(track => track.stop());
+                        videoPreview.srcObject = null;
+                    }
+                    videoPreview.classList.add('hidden');
+                    cameraPlaceholder.classList.remove('hidden');
+                    startCameraBtn.textContent = 'Iniciar Câmera';
+                });
+            });
+            
+        } catch (err) {
+            showError('Erro ao acessar a câmera. Verifique as permissões.');
+            console.error('Erro ao iniciar a câmera:', err);
+        }
+    });
+    
+    // File input for QR reading
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            showError('A imagem é muito grande. Máximo 5MB.');
+            console.warn('Erro: Imagem excede o limite de 5MB');
+            return;
+        }
+        
+        try {
+            const result = await QrScanner.scanImage(file, {
+                returnDetailedScanResult: true
+            });
+            showResult(result);
+            showSuccess('QR Code lido com sucesso!');
+            console.log('QR Code lido da imagem:', result.data);
+        } catch (err) {
+            showError('Nenhum QR Code encontrado na imagem. Certifique-se de que a imagem contém um QR Code válido.');
+            console.error('Erro ao ler QR Code da imagem:', err);
+        }
+    });
+    
+    // Drag and drop for file input
+    const fileDropArea = fileInput.parentElement;
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight(e) {
+        fileDropArea.querySelector('div').classList.add('bg-white/30');
+    }
+    
+    function unhighlight(e) {
+        fileDropArea.querySelector('div').classList.remove('bg-white/30');
+    }
+    
+    fileDropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+    
+    // Add floating elements animation
+    function createFloatingElements() {
+        const container = document.body;
+        const shapes = ['◆', '●', '▲', '■', '★'];
+        
+        for (let i = 0; i < 6; i++) {
+            const element = document.createElement('div');
+            element.className = 'fixed text-white/5 text-4xl pointer-events-none floating-animation';
+            element.style.left = Math.random() * 100 + '%';
+            element.style.top = Math.random() * 100 + '%';
+            element.style.animationDelay = Math.random() * 6 + 's';
+            element.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+            container.appendChild(element);
+        }
+    }
+    
+    // Initialize floating elements
+    createFloatingElements();
+    
+    // Add pulse effect to active elements
+    function addPulseEffect() {
+        const pulseElements = document.querySelectorAll('button, input, select, textarea');
+        pulseElements.forEach(el => {
+            el.addEventListener('focus', () => {
+                el.style.transform = 'scale(1.02)';
+            });
+            el.addEventListener('blur', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+    }
+    
+    addPulseEffect();
+    
+    // Add smooth scrolling and page transitions
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('.slide-up');
+        sections.forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+        });
+    });
+    
+    // Error handling for QR Scanner
+    window.addEventListener('error', (e) => {
+        if (e.message.includes('QrScanner')) {
+            console.warn('Biblioteca QR Scanner não carregada. Verifique os arquivos js/qr-scanner.min.js e js/qr-scanner.worker.min.js.');
+            showError('Erro: Biblioteca QrScanner não carregada. Verifique os arquivos js/qr-scanner.min.js e js/qr-scanner.worker.min.js.');
+        }
+    });
+    
+    // Responsive adjustments
+    function handleResize() {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile && qrScanner) {
+            qrScanner.setCamera('environment');
+        }
+    }
+    
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
+            e.preventDefault();
+            generateTab.click();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+            e.preventDefault();
+            readTab.click();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !generatorSection.classList.contains('hidden')) {
+            e.preventDefault();
+            generateBtn.click();
+        }
+    });
+    
+    // Add success animations
+    function showSuccessAnimation(element) {
+        element.style.transform = 'scale(1.05)';
+        element.style.transition = 'transform 0.2s ease';
+        setTimeout(() => {
+            element.style.transform = 'scale(1)';
+        }, 200);
+    }
+    
+    // Add loading states
+    function showLoading(button, text = 'Carregando...') {
+        const originalContent = button.innerHTML;
+        button.innerHTML = `<div class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full inline-block mr-2"></div>${text}`;
+        button.disabled = true;
+        
+        return () => {
+            button.innerHTML = originalContent;
+            button.disabled = false;
+        };
+    }
+    
+    // Enhanced error handling
+    function showError(message, duration = 3000) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+        errorDiv.textContent = message;
+        
+        document.body.appendChild(errorDiv);
+        
+        setTimeout(() => {
+            errorDiv.classList.remove('translate-x-full');
+        }, 100);
+        
+        setTimeout(() => {
+            errorDiv.classList.add('translate-x-full');
+            setTimeout(() => errorDiv.remove(), 300);
+        }, duration);
+    }
+    
+    function showSuccess(message, duration = 3000) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+        successDiv.textContent = message;
+        
+        document.body.appendChild(successDiv);
+        
+        setTimeout(() => {
+            successDiv.classList.remove('translate-x-full');
+        }, 100);
+        
+        setTimeout(() => {
+            successDiv.classList.add('translate-x-full');
+            setTimeout(() => successDiv.remove(), 300);
+        }, duration);
+    }
+</script>
+</body>
+</html>
