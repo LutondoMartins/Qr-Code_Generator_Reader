@@ -1,761 +1,616 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Criado em 12 de junho de 2025 - Landing page para QR Code Generator & Reader -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator & Reader - Crie e Leia Códigos QR com Facilidade</title>
+    
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Gere e leia códigos QR facilmente com nossa ferramenta online. Crie QRs para texto, URLs, e-mails, telefones e redes WiFi de forma rápida e segura.">
-    <meta name="keywords" content="QR Code, gerador de QR Code, leitor de QR Code, criar QR Code, escanear QR Code, ferramenta QR">
-    <meta name="author" content="Seu Nome ou Nome da Empresa">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="Ferramenta web completa para gerar e ler códigos QR. Crie QRs para texto, URLs, e-mails, telefones e WiFi. Escaneie QRs em tempo real com sua câmera.">
+    <meta name="keywords" content="QR Code, gerador QR, leitor QR, códigos QR, scanner QR, WiFi QR, URL QR">
+    <meta name="author" content="QR Code Generator & Reader">
+    
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="QRio">
-    <meta property="og:description" content="Crie e escaneie códigos QR para texto, URLs, e-mails, telefones e WiFi com nossa ferramenta fácil de usar.">
+    <meta property="og:title" content="QR Code Generator & Reader - Crie e Leia Códigos QR">
+    <meta property="og:description" content="Ferramenta web completa para gerar e ler códigos QR. Interface moderna, responsiva e gratuita.">
+    <meta property="og:image" content="assets/images/og-image.jpg">
+    <meta property="og:url" content="https://qrcodetool.com">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://seusite.com">
-    <meta property="og:image" content="https://seusite.com/assets/images/og-image.jpg">
-    <meta property="og:site_name" content="QR Generator">
+    <meta property="og:site_name" content="QR Code Generator & Reader">
+    
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="QRio">
-    <meta name="twitter:description" content="Ferramenta online para gerar e ler códigos QR de forma rápida e segura.">
-    <meta name="twitter:image" content="https://seusite.com/assets/images/og-image.jpg">
+    <meta name="twitter:title" content="QR Code Generator & Reader">
+    <meta name="twitter:description" content="Crie e leia códigos QR com facilidade. Ferramenta web moderna e gratuita.">
+    <meta name="twitter:image" content="assets/images/og-image.jpg">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/favicon-512x512.png">
     <link rel="apple-touch-icon" href="assets/images/favicon-512x512.png">
-    <title>QRio | VOID</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out infinite 2s',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .glassmorphism {
+            background: rgba(17, 24, 39, 0.2);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .dark .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .hero-pattern {
+            background-image: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                            radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.3) 0%, transparent 50%);
+        }
+        
+        .scroll-indicator {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+        
+        .testimonial-card {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .testimonial-card.slide-left {
+            transform: translateX(-100%);
+        }
+        
+        .testimonial-card.slide-right {
+            transform: translateX(100%);
+        }
+    </style>
 </head>
-<body class="min-h-screen transition-all duration-500 gradient-bg">
-    <!-- HTML do layout mantido exatamente como no original -->
-    <div class="min-h-screen p-4 md:p-8">
-        <!-- Header -->
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center glass-effect">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-white">QRio</h1>
-                    <p class="text-white/70 text-sm">Gere e leia códigos QR facilmente</p>
-                </div>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-teal-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 min-h-screen transition-colors duration-300">
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 hero-pattern opacity-50"></div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-20 animate-float"></div>
+        <div class="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-20 animate-float-delayed"></div>
+        <div class="absolute bottom-20 left-20 w-24 h-24 bg-gradient-to-r from-green-400 to-teal-400 rounded-full opacity-20 animate-float"></div>
+        
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="fixed top-6 right-6 z-50 p-3 glassmorphism rounded-full hover:scale-110 transition-all duration-300" aria-label="Alternar tema">
+            <svg class="w-6 h-6 text-yellow-500 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+            </svg>
+            <svg class="w-6 h-6 text-blue-400 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+        </button>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="animate-slide-up">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-800 dark:text-white mb-6 leading-tight">
+                    Crie e Leia <span class="bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent">Códigos QR</span> com Facilidade
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+                    Gere QRs personalizados para texto, URLs, e-mails, telefones e WiFi, ou escaneie QRs em tempo real com nossa ferramenta moderna e intuitiva.
+                </p>
+                
+                <!-- CTA Button -->
+                <a href="qr_code.html" class="inline-block py-4 px-8 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl" aria-label="Experimentar QR Code Generator & Reader">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Experimente Agora
+                    </span>
+                </a>
             </div>
             
-            <!-- Theme Toggle -->
-            <div class="flex items-center space-x-3">
-                <span class="text-white/70 text-sm">🌙</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="theme-toggle" aria-label="Alternar tema claro/escuro">
-                    <span class="slider"></span>
-                </label>
-                <span class="text-white/70 text-sm">☀️</span>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <div class="max-w-6xl mx-auto">
-            <!-- Tab Navigation -->
-            <div class="flex space-x-1 mb-8">
-                <button id="generate-tab" class="tab-btn active flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 glass-effect text-white" aria-label="Aba para gerar QR Code">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
-                    </svg>
-                    Gerar QR Code
-                </button>
-                <button id="read-tab" class="tab-btn flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 text-white/70 hover:text-white" aria-label="Aba para ler QR Code">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    Ler QR Code
-                </button>
-            </div>
-
-            <!-- Generator Section -->
-            <div id="generator-section" class="tab-content">
-                <div class="grid lg:grid-cols-2 gap-8">
-                    <!-- Input Section -->
-                    <div class="space-y-6">
-                        <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
-                            <h3 class="text-xl font-semibold text-white mb-4">Configurações</h3>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-type">Tipo de Conteúdo</label>
-                                    <select id="qr-type" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" aria-label="Selecionar tipo de conteúdo para o QR Code" style="color: #ffff;">
-                                        <option value="text">Texto</option>
-                                        <option value="url">URL</option>
-                                        <option value="email">Email</option>
-                                        <option value="phone">Telefone</option>
-                                        <option value="wifi">WiFi</option>
-                                    </select>
-                                </div>
-                                
-                                <div id="text-input" class="input-group">
-                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-text">Texto</label>
-                                    <textarea id="qr-text" rows="4" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all resize-none" placeholder="Digite seu texto aqui..." aria-label="Digite o texto para gerar o QR Code"></textarea>
-                                </div>
-                                
-                                <div id="url-input" class="input-group hidden">
-                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-url">URL</label>
-                                    <input type="url" id="qr-url" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="https://exemplo.com" aria-label="Digite a URL para gerar o QR Code">
-                                </div>
-                                
-                                <div id="email-input" class="input-group hidden">
-                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-email">Email</label>
-                                    <input type="email" id="qr-email" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="exemplo@email.com" aria-label="Digite o e-mail para gerar o QR Code">
-                                </div>
-                                
-                                <div id="phone-input" class="input-group hidden">
-                                    <label class="block text-white/80 text-sm font-medium mb-2" for="qr-phone">Telefone</label>
-                                    <input type="tel" id="qr-phone" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="+55 11 99999-9999" aria-label="Digite o telefone para gerar o QR Code">
-                                </div>
-                                
-                                <div id="wifi-input" class="input-group hidden space-y-3">
-                                    <div>
-                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-ssid">Nome da Rede (SSID)</label>
-                                        <input type="text" id="wifi-ssid" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="MinhaRede" aria-label="Digite o nome da rede WiFi">
-                                    </div>
-                                    <div>
-                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-password">Senha</label>
-                                        <input type="password" id="wifi-password" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="senha123" aria-label="Digite a senha da rede WiFi">
-                                    </div>
-                                    <div>
-                                        <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-security">Tipo de Segurança</label>
-                                        <select id="wifi-security" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" aria-label="Selecionar tipo de segurança da rede WiFi">
-                                            <option value="WPA">WPA/ WPA2</option>
-                                            <option value="WEP">WEP</option>
-                                            <option value="nopass">Sem senha</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <button id="generate-btn" class="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg" aria-label="Gerar QR Code">
-                                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
-                                    </svg>
-                                    Gerar QR Code
-                                </button>
-                            </div>
-                        </div>
+            <!-- QR Code Mockup -->
+            <div class="mt-16 animate-fade-in">
+                <div class="glassmorphism rounded-2xl p-8 max-w-md mx-auto">
+                    <div class="w-48 h-48 mx-auto bg-white rounded-lg p-4 shadow-lg">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <!-- Simplified QR Code Pattern -->
+                            <rect x="0" y="0" width="200" height="200" fill="white"/>
+                            <rect x="10" y="10" width="30" height="30" fill="black"/>
+                            <rect x="160" y="10" width="30" height="30" fill="black"/>
+                            <rect x="10" y="160" width="30" height="30" fill="black"/>
+                            <rect x="20" y="20" width="10" height="10" fill="white"/>
+                            <rect x="170" y="20" width="10" height="10" fill="white"/>
+                            <rect x="20" y="170" width="10" height="10" fill="white"/>
+                            <!-- Random pattern -->
+                            <rect x="50" y="50" width="10" height="10" fill="black"/>
+                            <rect x="70" y="50" width="10" height="10" fill="black"/>
+                            <rect x="90" y="50" width="10" height="10" fill="black"/>
+                            <rect x="110" y="50" width="10" height="10" fill="black"/>
+                            <rect x="130" y="50" width="10" height="10" fill="black"/>
+                            <rect x="50" y="70" width="10" height="10" fill="black"/>
+                            <rect x="90" y="70" width="10" height="10" fill="black"/>
+                            <rect x="130" y="70" width="10" height="10" fill="black"/>
+                        </svg>
                     </div>
-                    
-                    <!-- QR Code Display -->
-                    <div class="space-y-6">
-                        <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
-                            <h3 class="text-xl font-semibold text-white mb-4">QR Code Gerado</h3>
-                            
-                            <div id="qr-display" class="bg-white rounded-xl p-6 text-center min-h-[300px] flex items-center justify-center">
-                                <div class="text-gray-400">
-                                    <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
-                                    </svg>
-                                    <p class="text-sm">Seu QR Code aparecerá aqui</p>
-                                </div>
-                            </div>
-                            
-                            <div id="qr-actions" class="mt-4 space-y-3 hidden">
-                                <button id="download-btn" class="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Baixar QR Code como PNG">
-                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                                    </svg>
-                                    Baixar PNG
-                                </button>
-                                <button id="copy-btn" class="w-full py-2 px-4 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Copiar imagem do QR Code">
-                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                    </svg>
-                                    Copiar Imagem
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reader Section -->
-            <div id="reader-section" class="tab-content hidden">
-                <div class="max-w-2xl mx-auto">
-                    <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
-                        <h3 class="text-xl font-semibold text-white mb-6 text-center">Ler QR Code</h3>
-                        
-                        <div class="space-y-6">
-                            <!-- Camera Reader -->
-                            <div>
-                                <h4 class="text-white/80 font-medium mb-3">📷 Usar Câmera</h4>
-                                <div class="relative">
-                                    <video id="video-preview" class="w-full rounded-xl bg-black hidden" autoplay aria-label="Visualização da câmera para leitura de QR Code"></video>
-                                    <div id="camera-placeholder" class="w-full h-64 bg-white/10 rounded-xl border-2 border-dashed border-white/30 flex items-center justify-center">
-                                        <div class="text-center">
-                                            <svg class="w-12 h-12 mx-auto mb-3 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                            <p class="text-white/70">Clique para ativar a câmera</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button id="start-camera" class="w-full mt-3 py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Iniciar ou parar câmera">
-                                    Iniciar Câmera
-                                </button>
-                            </div>
-                            
-                            <!-- File Upload -->
-                            <div class="border-t border-white/20 pt-6">
-                                <h4 class="text-white/80 font-medium mb-3">📁 Carregar Imagem</h4>
-                                <div class="relative">
-                                    <input type="file" id="file-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" aria-label="Selecionar imagem para leitura de QR Code">
-                                    <div class="w-full h-32 bg-white/10 rounded-xl border-2 border-dashed border-white/30 flex items-center justify-center hover:bg-white/20 transition-all duration-300">
-                                        <div class="text-center">
-                                            <svg class="w-8 h-8 mx-auto mb-2 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                            </svg>
-                                            <p class="text-white/70 text-sm">Arraste uma imagem ou clique para selecionar</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Result -->
-                            <div id="scan-result" class="hidden bg-white/10 rounded-xl p-4 border border-white/20">
-                                <h4 class="text-white font-medium mb-2">Resultado:</h4>
-                                <div id="result-content" class="bg-white/5 rounded-lg p-3 text-white/90 font-mono text-sm break-all" aria-live="polite"></div>
-                                <button id="copy-result" class="mt-3 py-1 px-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded transition-all duration-300" aria-label="Copiar resultado do QR Code">
-                                    Copiar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mt-4 font-medium">QR Code gerado instantaneamente</p>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script type="module">
-    // Importa a biblioteca QrScanner
-    import QrScanner from './js/qr-scanner.min.js';
-
-    // Theme Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    
-    // Check for saved theme preference
-    const savedTheme = JSON.parse(localStorage.getItem('darkMode') || 'false');
-    if (savedTheme) {
-        body.classList.add('dark');
-        themeToggle.checked = true;
-    }
-    
-    themeToggle.addEventListener('change', () => {
-        body.classList.toggle('dark');
-        localStorage.setItem('darkMode', JSON.stringify(themeToggle.checked));
-    });
-    
-    // Tab Functionality
-    const generateTab = document.getElementById('generate-tab');
-    const readTab = document.getElementById('read-tab');
-    const generatorSection = document.getElementById('generator-section');
-    const readerSection = document.getElementById('reader-section');
-    
-    generateTab.addEventListener('click', () => {
-        generateTab.classList.add('active', 'glass-effect', 'text-white');
-        generateTab.classList.remove('text-white/70');
-        readTab.classList.remove('active', 'glass-effect', 'text-white');
-        readTab.classList.add('text-white/70');
-        generatorSection.classList.remove('hidden');
-        readerSection.classList.add('hidden');
-    });
-    
-    readTab.addEventListener('click', () => {
-        readTab.classList.add('active', 'glass-effect', 'text-white');
-        readTab.classList.remove('text-white/70');
-        generateTab.classList.remove('active', 'glass-effect', 'text-white');
-        generateTab.classList.add('text-white/70');
-        readerSection.classList.remove('hidden');
-        generatorSection.classList.add('hidden');
-    });
-    
-    // QR Type Selection
-    const qrType = document.getElementById('qr-type');
-    const inputGroups = document.querySelectorAll('.input-group');
-    
-    qrType.addEventListener('change', () => {
-        inputGroups.forEach(group => group.classList.add('hidden'));
-        document.getElementById(`${qrType.value}-input`).classList.remove('hidden');
-    });
-    
-    // QR Code Generation
-    const generateBtn = document.getElementById('generate-btn');
-    const qrDisplay = document.getElementById('qr-display');
-    const qrActions = document.getElementById('qr-actions');
-    
-    function getQRContent() {
-        const type = qrType.value;
-        switch(type) {
-            case 'text':
-                return document.getElementById('qr-text').value;
-            case 'url':
-                return document.getElementById('qr-url').value;
-            case 'email':
-                return `mailto:${document.getElementById('qr-email').value}`;
-            case 'phone':
-                return `tel:${document.getElementById('qr-phone').value}`;
-            case 'wifi':
-                const ssid = document.getElementById('wifi-ssid').value;
-                const password = document.getElementById('wifi-password').value;
-                const security = document.getElementById('wifi-security').value;
-                return `WIFI:T:${security};S:${ssid};P:${password};;`;
-            default:
-                return '';
-        }
-    }
-    
-    function validateInput(type, value) {
-        if (!value.trim()) return false;
-        if (type === 'url') {
-            return /^(https?:\/\/)/i.test(value);
-        }
-        if (type === 'email') {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        }
-        return true;
-    }
-    
-    generateBtn.addEventListener('click', () => {
-        const content = getQRContent();
-        if (!content.trim()) {
-            showError('Por favor, preencha o campo necessário!');
-            console.warn('Erro: Campo de entrada vazio');
-            return;
-        }
-        if (!validateInput(qrType.value, content)) {
-            showError('Formato inválido para o tipo selecionado!');
-            console.warn('Erro: Formato inválido para', qrType.value, 'com valor:', content);
-            return;
-        }
         
-        try {
-            const resetLoading = showLoading(generateBtn, 'Gerando...');
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </header>
+    
+    <!-- Features Section -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6">
+                    Funcionalidades <span class="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">Poderosas</span>
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Tudo que você precisa para trabalhar com códigos QR em uma única ferramenta
+                </p>
+            </div>
             
-            // Verifica se a biblioteca QRCode está carregada
-            if (typeof QRCode === 'undefined') {
-                showError('Erro: Biblioteca QRCode não carregada.');
-                console.error('QRCode library not found. Check CDN or local file.');
-                resetLoading();
-                return;
-            }
-            
-            // Cria um contêiner para o QR code
-            qrDisplay.innerHTML = '';
-            const qrContainer = document.createElement('div');
-            qrContainer.style.display = 'inline-block';
-            qrDisplay.appendChild(qrContainer);
-            
-            console.log('Gerando QR Code para:', content);
-            // Usa a API do qrcodejs
-            new QRCode(qrContainer, {
-                text: content,
-                width: 256,
-                height: 256,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-            });
-            
-            // Aguarda o carregamento completo da imagem gerada
-            const qrImage = qrContainer.querySelector('img');
-            if (!qrImage) {
-                showError('Erro: Imagem do QR Code não foi gerada.');
-                console.error('No QR code image found in container.');
-                resetLoading();
-                return;
-            }
-            
-            qrImage.onload = () => {
-                // Converte o QR code para canvas para download e cópia
-                const canvas = document.createElement('canvas');
-                canvas.width = 256;
-                canvas.height = 256;
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#ffffff'; // Garante fundo branco
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(qrImage, 0, 0, 256, 256);
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="glassmorphism rounded-2xl p-6 text-center hover:scale-105 transition-all duration-300 animate-slide-up">
+                    <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Geração Múltipla</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Crie QRs para texto, URLs, e-mails, telefones e redes WiFi com facilidade</p>
+                </div>
                 
-                // Substitui o contêiner pelo canvas
-                qrDisplay.innerHTML = '';
-                qrDisplay.appendChild(canvas);
-                qrActions.classList.remove('hidden');
-                showSuccess('QR Code gerado com sucesso!');
-                console.log('QR Code gerado com sucesso');
+                <!-- Feature 2 -->
+                <div class="glassmorphism rounded-2xl p-6 text-center hover:scale-105 transition-all duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Scanner Avançado</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Leia QRs em tempo real usando sua câmera ou faça upload de imagens</p>
+                </div>
                 
-                // Download
-                document.getElementById('download-btn').onclick = () => {
-                    const link = document.createElement('a');
-                    link.download = 'qrcode.png';
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    console.log('QR Code baixado como PNG');
-                };
+                <!-- Feature 3 -->
+                <div class="glassmorphism rounded-2xl p-6 text-center hover:scale-105 transition-all duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">100% Responsivo</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Interface adaptável que funciona perfeitamente em todos os dispositivos</p>
+                </div>
                 
-                // Copiar
-                document.getElementById('copy-btn').onclick = async () => {
-                    try {
-                        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                        await navigator.clipboard.write([
-                            new ClipboardItem({ 'image/png': blob })
-                        ]);
-                        showSuccess('Imagem copiada para a área de transferência!');
-                        console.log('Imagem do QR Code copiada');
-                    } catch (err) {
-                        showError('Erro ao copiar imagem');
-                        console.error('Erro ao copiar imagem:', err);
-                    }
-                };
+                <!-- Feature 4 -->
+                <div class="glassmorphism rounded-2xl p-6 text-center hover:scale-105 transition-all duration-300 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Download & Cópia</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Baixe seus QRs ou copie-os para a área de transferência instantaneamente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="py-20 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6">
+                    Como <span class="bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent">Funciona</span>
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Três passos simples para criar e ler códigos QR
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">1</div>
+                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Escolha o Tipo</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Selecione o tipo de conteúdo: URL, texto, e-mail, telefone ou WiFi</p>
+                </div>
                 
-                resetLoading();
-            };
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">2</div>
+                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Preencha os Dados</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Digite as informações necessárias e gere seu QR Code personalizado</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">3</div>
+                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Baixe ou Escaneie</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Baixe seu QR ou use a câmera para escanear outros códigos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6">
+                    O que nossos <span class="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">usuários dizem</span>
+                </h2>
+            </div>
             
-            qrImage.onerror = () => {
-                showError('Erro ao carregar imagem do QR Code.');
-                console.error('Failed to load QR code image.');
-                resetLoading();
-            };
+            <div class="relative max-w-4xl mx-auto">
+                <div class="overflow-hidden">
+                    <div id="testimonialContainer" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Testimonial 1 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="glassmorphism rounded-2xl p-8 text-center">
+                                <div class="flex justify-center mb-4">
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 italic">"Ferramenta incrível para criar QRs rapidamente! Interface muito intuitiva e funciona perfeitamente em todos os dispositivos. Uso diariamente no meu trabalho."</p>
+                                <div class="flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold mr-4">JS</div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800 dark:text-white">João Silva</p>
+                                        <p class="text-gray-600 dark:text-gray-400">Marketing Digital</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Testimonial 2 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="glassmorphism rounded-2xl p-8 text-center">
+                                <div class="flex justify-center mb-4">
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 italic">"Excelente para compartilhar WiFi com clientes! O scanner funciona perfeitamente e é muito rápido."</p>
+                                <div class="flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">MS</div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800 dark:text-white">Maria Santos</p>
+                                        <p class="text-gray-600 dark:text-gray-400">Proprietária de Café</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Testimonial 3 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="glassmorphism rounded-2xl p-8 text-center">
+                                <div class="flex justify-center mb-4">
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 italic">"Como desenvolvedor, aprecio a simplicidade e eficiência. Ferramenta essencial para meus projetos!"</p>
+                                <div class="flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold mr-4">PC</div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800 dark:text-white">Pedro Costa</p>
+                                        <p class="text-gray-600 dark:text-gray-400">Desenvolvedor Web</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Dots -->
+                <div class="flex justify-center mt-8 space-x-2">
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-emerald-500 transition-all duration-300" data-slide="0"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300" data-slide="1"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300" data-slide="2"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Secondary CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-emerald-500 to-teal-600">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Transforme suas ideias em QRs instantaneamente!
+            </h2>
+            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                Junte-se a milhares de usuários que já descobriram a facilidade de criar e ler códigos QR
+            </p>
+            <a href="qr_code.html" class="inline-block py-4 px-8 bg-white text-emerald-600 font-semibold rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl" aria-label="Começar a usar QR Code Generator & Reader">
+                <span class="flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Comece Agora
+                </span>
+            </a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1">
+                    <h3 class="text-2xl font-bold mb-4">QRio</h3>
+                    <p class="text-gray-400 mb-4">A ferramenta mais completa para criar e ler códigos QR na web.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://facebook.com/profile.php?id=61577245288372" 
+                           class="text-gray-400 hover:text-white hover:rotate-12 transition-all duration-300 text-2xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://github.com/lutondomartins/" target="_blank" 
+                           class="text-gray-400 hover:text-white hover:rotate-12 transition-all duration-300 text-2xl">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/lutondo-martins-0a5257343/" target="_blank" 
+                           class="text-gray-400 hover:text-white hover:rotate-12 transition-all duration-300 text-2xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4">Links Úteis</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors duration-300">Ferramenta</a></li>
+                        <li><a href="https://github.com/LutondoMartins/Qr-Code_Generator_Reader" class="text-gray-400 hover:text-white transition-colors duration-300">GitHub</a></li>
+                        <!-- <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Documentação</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">API</a></li> -->
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4">Suporte</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mailto:lutondomartinsdev@gmail.com" class="text-gray-400 hover:text-white transition-colors duration-300">Contato</a></li>
+                        <!-- <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Tutoriais</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Feedback</a></li> -->
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Política de Privacidade</a></li>
+                        <!-- <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Cookies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">LGPD</a></li> -->
+                    </ul>
+                </div>
+            </div>
             
-        } catch (err) {
-            showError('Erro ao gerar QR Code.');
-            console.error('Erro na geração do QR Code:', err);
-            resetLoading();
-        }
-    });
+            <hr class="border-gray-700 my-8">
+            
+            <div class="text-center text-gray-400">
+                <p>&copy; 2025 QRio. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
     
-    // QR Code Reader
-    const startCameraBtn = document.getElementById('start-camera');
-    const videoPreview = document.getElementById('video-preview');
-    const cameraPlaceholder = document.getElementById('camera-placeholder');
-    const fileInput = document.getElementById('file-input');
-    const scanResult = document.getElementById('scan-result');
-    const resultContent = document.getElementById('result-content');
-    const copyResultBtn = document.getElementById('copy-result');
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 z-50 p-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 opacity-0 pointer-events-none" aria-label="Voltar ao topo">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
     
-    let qrScanner = null;
-    
-    function showResult(result) {
-        resultContent.textContent = result.data;
-        scanResult.classList.remove('hidden');
+    <!-- JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
         
-        copyResultBtn.onclick = async () => {
-            try {
-                await navigator.clipboard.writeText(result.data);
-                const originalText = copyResultBtn.textContent;
-                copyResultBtn.textContent = 'Copiado!';
-                setTimeout(() => copyResultBtn.textContent = originalText, 2000);
-                console.log('Resultado do QR Code copiado:', result.data);
-            } catch (err) {
-                showError('Erro ao copiar resultado.');
-                console.error('Erro ao copiar resultado:', err);
+        // Check for saved theme preference or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', savedTheme === 'dark');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Testimonial Carousel
+        let currentSlide = 0;
+        const testimonialContainer = document.getElementById('testimonialContainer');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+        const totalSlides = 3;
+        
+        function showSlide(index) {
+            currentSlide = index;
+            testimonialContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            testimonialDots.forEach((dot, i) => {
+                if (i === currentSlide) {
+                    dot.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                    dot.classList.add('bg-emerald-500');
+                } else {
+                    dot.classList.remove('bg-emerald-500');
+                    dot.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                }
+            });
+        }
+        
+        testimonialDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+        
+        // Auto-advance testimonials
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }, 5000);
+        
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100');
             }
-        };
-    }
-    
-    startCameraBtn.addEventListener('click', async () => {
-        try {
-            if (qrScanner) {
-                qrScanner.stop();
-                qrScanner.destroy();
-                qrScanner = null;
-                if (videoPreview.srcObject) {
-                    const tracks = videoPreview.srcObject.getTracks();
-                    tracks.forEach(track => track.stop());
-                    videoPreview.srcObject = null;
-                }
-                videoPreview.classList.add('hidden');
-                cameraPlaceholder.classList.remove('hidden');
-                startCameraBtn.textContent = 'Iniciar Câmera';
-                console.log('Câmera parada');
-                return;
-            }
-            
-            // Verifica suporte para WebRTC
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                showError('Erro: Seu navegador não suporta acesso à câmera.');
-                console.error('WebRTC não suportado.');
-                return;
-            }
-            
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: 'environment',
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
-                }
-            });
-            videoPreview.srcObject = stream;
-            videoPreview.classList.remove('hidden');
-            cameraPlaceholder.classList.add('hidden');
-            startCameraBtn.textContent = 'Parar Câmera';
-            console.log('Câmera iniciada');
-            
-            // Inicializa o scanner
-            qrScanner = new QrScanner(videoPreview, result => {
-                showResult(result);
-                qrScanner.stop();
-                qrScanner.destroy();
-                qrScanner = null;
-                videoPreview.classList.add('hidden');
-                cameraPlaceholder.classList.remove('hidden');
-                startCameraBtn.textContent = 'Iniciar Câmera';
-                if (videoPreview.srcObject) {
-                    const tracks = videoPreview.srcObject.getTracks();
-                    tracks.forEach(track => track.stop());
-                    videoPreview.srcObject = null;
-                }
-                showSuccess('QR Code lido com sucesso!');
-                console.log('QR Code lido:', result.data);
-            }, {
-                returnDetailedScanResult: true,
-                highlightScanRegion: true,
-                highlightCodeOutline: false, // Desativado para evitar erros de renderização
-                maxScansPerSecond: 10,
-                onDecodeError: (error) => {
-                    console.warn('Erro ao decodificar QR Code:', error);
-                }
-            });
-            
-            // Verifica se há câmeras disponíveis
-            QrScanner.hasCamera().then(hasCamera => {
-                if (!hasCamera) {
-                    showError('Nenhuma câmera detectada.');
-                    console.error('Nenhuma câmera detectada.');
-                    qrScanner.stop();
-                    qrScanner.destroy();
-                    qrScanner = null;
-                    if (videoPreview.srcObject) {
-                        videoPreview.srcObject.getTracks().forEach(track => track.stop());
-                        videoPreview.srcObject = null;
-                    }
-                    videoPreview.classList.add('hidden');
-                    cameraPlaceholder.classList.remove('hidden');
-                    startCameraBtn.textContent = 'Iniciar Câmera';
-                    return;
-                }
-                qrScanner.start().catch(err => {
-                    showError('Erro ao iniciar o scanner de QR Code.');
-                    console.error('Erro ao iniciar QR scanner:', err);
-                    if (videoPreview.srcObject) {
-                        videoPreview.srcObject.getTracks().forEach(track => track.stop());
-                        videoPreview.srcObject = null;
-                    }
-                    videoPreview.classList.add('hidden');
-                    cameraPlaceholder.classList.remove('hidden');
-                    startCameraBtn.textContent = 'Iniciar Câmera';
-                });
-            });
-            
-        } catch (err) {
-            showError('Erro ao acessar a câmera. Verifique as permissões.');
-            console.error('Erro ao iniciar a câmera:', err);
-        }
-    });
-    
-    // File input for QR reading
-    fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.size > 5 * 1024 * 1024) {
-            showError('A imagem é muito grande. Máximo 5MB.');
-            console.warn('Erro: Imagem excede o limite de 5MB');
-            return;
-        }
+        });
         
-        try {
-            const result = await QrScanner.scanImage(file, {
-                returnDetailedScanResult: true
-            });
-            showResult(result);
-            showSuccess('QR Code lido com sucesso!');
-            console.log('QR Code lido da imagem:', result.data);
-        } catch (err) {
-            showError('Nenhum QR Code encontrado na imagem. Certifique-se de que a imagem contém um QR Code válido.');
-            console.error('Erro ao ler QR Code da imagem:', err);
-        }
-    });
-    
-    // Drag and drop for file input
-    const fileDropArea = fileInput.parentElement;
-    
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        fileDropArea.addEventListener(eventName, preventDefaults, false);
-    });
-    
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    
-    ['dragenter', 'dragover'].forEach(eventName => {
-        fileDropArea.addEventListener(eventName, highlight, false);
-    });
-    
-    ['dragleave', 'drop'].forEach(eventName => {
-        fileDropArea.addEventListener(eventName, unhighlight, false);
-    });
-    
-    function highlight(e) {
-        fileDropArea.querySelector('div').classList.add('bg-white/30');
-    }
-    
-    function unhighlight(e) {
-        fileDropArea.querySelector('div').classList.remove('bg-white/30');
-    }
-    
-    fileDropArea.addEventListener('drop', handleDrop, false);
-    
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        
-        if (files.length > 0) {
-            fileInput.files = files;
-            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-    }
-    
-    // Add floating elements animation
-    function createFloatingElements() {
-        const container = document.body;
-        const shapes = ['◆', '●', '▲', '■', '★'];
-        
-        for (let i = 0; i < 6; i++) {
-            const element = document.createElement('div');
-            element.className = 'fixed text-white/5 text-4xl pointer-events-none floating-animation';
-            element.style.left = Math.random() * 100 + '%';
-            element.style.top = Math.random() * 100 + '%';
-            element.style.animationDelay = Math.random() * 6 + 's';
-            element.textContent = shapes[Math.floor(Math.random() * shapes.length)];
-            container.appendChild(element);
-        }
-    }
-    
-    // Initialize floating elements
-    createFloatingElements();
-    
-    // Add pulse effect to active elements
-    function addPulseEffect() {
-        const pulseElements = document.querySelectorAll('button, input, select, textarea');
-        pulseElements.forEach(el => {
-            el.addEventListener('focus', () => {
-                el.style.transform = 'scale(1.02)';
-            });
-            el.addEventListener('blur', () => {
-                el.style.transform = 'scale(1)';
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
-    }
-    
-    addPulseEffect();
-    
-    // Add smooth scrolling and page transitions
-    document.addEventListener('DOMContentLoaded', () => {
-        const sections = document.querySelectorAll('.slide-up');
-        sections.forEach((section, index) => {
-            section.style.animationDelay = `${index * 0.1}s`;
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
-    });
-    
-    // Error handling for QR Scanner
-    window.addEventListener('error', (e) => {
-        if (e.message.includes('QrScanner')) {
-            console.warn('Biblioteca QR Scanner não carregada. Verifique os arquivos js/qr-scanner.min.js e js/qr-scanner.worker.min.js.');
-            showError('Erro: Biblioteca QrScanner não carregada. Verifique os arquivos js/qr-scanner.min.js e js/qr-scanner.worker.min.js.');
-        }
-    });
-    
-    // Responsive adjustments
-    function handleResize() {
-        const isMobile = window.innerWidth < 768;
-        if (isMobile && qrScanner) {
-            qrScanner.setCamera('environment');
-        }
-    }
-    
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
-            e.preventDefault();
-            generateTab.click();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
-            e.preventDefault();
-            readTab.click();
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !generatorSection.classList.contains('hidden')) {
-            e.preventDefault();
-            generateBtn.click();
-        }
-    });
-    
-    // Add success animations
-    function showSuccessAnimation(element) {
-        element.style.transform = 'scale(1.05)';
-        element.style.transition = 'transform 0.2s ease';
-        setTimeout(() => {
-            element.style.transform = 'scale(1)';
-        }, 200);
-    }
-    
-    // Add loading states
-    function showLoading(button, text = 'Carregando...') {
-        const originalContent = button.innerHTML;
-        button.innerHTML = `<div class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full inline-block mr-2"></div>${text}`;
-        button.disabled = true;
         
-        return () => {
-            button.innerHTML = originalContent;
-            button.disabled = false;
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
-    }
-    
-    // Enhanced error handling
-    function showError(message, duration = 3000) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
-        errorDiv.textContent = message;
         
-        document.body.appendChild(errorDiv);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
+                }
+            });
+        }, observerOptions);
         
-        setTimeout(() => {
-            errorDiv.classList.remove('translate-x-full');
-        }, 100);
-        
-        setTimeout(() => {
-            errorDiv.classList.add('translate-x-full');
-            setTimeout(() => errorDiv.remove(), 300);
-        }, duration);
-    }
-    
-    function showSuccess(message, duration = 3000) {
-        const successDiv = document.createElement('div');
-        successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
-        successDiv.textContent = message;
-        
-        document.body.appendChild(successDiv);
-        
-        setTimeout(() => {
-            successDiv.classList.remove('translate-x-full');
-        }, 100);
-        
-        setTimeout(() => {
-            successDiv.classList.add('translate-x-full');
-            setTimeout(() => successDiv.remove(), 300);
-        }, duration);
-    }
-</script>
+        // Observe elements with animation classes
+        document.querySelectorAll('.glassmorphism').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
