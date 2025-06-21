@@ -53,28 +53,10 @@ Outros:
 Favicon para branding.
 Tags meta para SEO e compartilhamento em redes sociais.
 
-
-
-Estrutura do Projeto
-project/
-├── assets/
-│   ├── css/
-│   │   └── style.css        # Estilos personalizados
-│   ├── images/
-│   │   ├── favicon.ico      # Favicon para navegadores
-│   │   ├── favicon-512x512.png # Ícone para dispositivos móveis
-│   │   └── og-image.jpg     # Imagem para Open Graph/Twitter Cards
-│   ├── js/
-│   │   ├── script.js        # Lógica principal (ou script.min.js se minificado)
-│   │   ├── qr-scanner.min.js # Biblioteca para leitura de QR Codes
-│   │   └── qr-scanner.worker.min.js # Worker para qr-scanner
-├── index.html               # Página principal
-└── README.md                # Documentação do projeto
-
 Instalação
 
 Clone o repositório:
-git clone https://github.com/seu-usuario/qr-code-generator-reader.git
+git clone https://github.com/lutondomartins/qr-code-generator-reader.git
 cd qr-code-generator-reader
 
 
