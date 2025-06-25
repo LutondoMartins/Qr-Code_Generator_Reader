@@ -29,9 +29,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="min-h-screen transition-all duration-500 gradient-bg">
-    <!-- HTML do layout mantido exatamente como no original -->
     <div class="min-h-screen p-4 md:p-8">
-        <!-- Header -->
         <header class="flex justify-between items-center mb-8">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center glass-effect">
@@ -44,8 +42,6 @@
                     <p class="text-white/70 text-sm">Gere e leia códigos QR facilmente</p>
                 </div>
             </div>
-            
-            <!-- Theme Toggle -->
             <div class="flex items-center space-x-3">
                 <span class="text-white/70 text-sm">🌙</span>
                 <label class="toggle-switch">
@@ -56,9 +52,7 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <div class="max-w-6xl mx-auto">
-            <!-- Tab Navigation -->
             <div class="flex space-x-1 mb-8">
                 <button id="generate-tab" class="tab-btn active flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 glass-effect text-white" aria-label="Aba para gerar QR Code">
                     <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,14 +69,11 @@
                 </button>
             </div>
 
-            <!-- Generator Section -->
             <div id="generator-section" class="tab-content">
                 <div class="grid lg:grid-cols-2 gap-8">
-                    <!-- Input Section -->
                     <div class="space-y-6">
                         <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
                             <h3 class="text-xl font-semibold text-white mb-4">Configurações</h3>
-                            
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-white/80 text-sm font-medium mb-2" for="qr-type">Tipo de Conteúdo</label>
@@ -94,27 +85,22 @@
                                         <option value="wifi">WiFi</option>
                                     </select>
                                 </div>
-                                
                                 <div id="text-input" class="input-group">
                                     <label class="block text-white/80 text-sm font-medium mb-2" for="qr-text">Texto</label>
                                     <textarea id="qr-text" rows="4" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all resize-none" placeholder="Digite seu texto aqui..." aria-label="Digite o texto para gerar o QR Code"></textarea>
                                 </div>
-                                
                                 <div id="url-input" class="input-group hidden">
                                     <label class="block text-white/80 text-sm font-medium mb-2" for="qr-url">URL</label>
                                     <input type="url" id="qr-url" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="https://exemplo.com" aria-label="Digite a URL para gerar o QR Code">
                                 </div>
-                                
                                 <div id="email-input" class="input-group hidden">
                                     <label class="block text-white/80 text-sm font-medium mb-2" for="qr-email">Email</label>
                                     <input type="email" id="qr-email" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="exemplo@email.com" aria-label="Digite o e-mail para gerar o QR Code">
                                 </div>
-                                
                                 <div id="phone-input" class="input-group hidden">
                                     <label class="block text-white/80 text-sm font-medium mb-2" for="qr-phone">Telefone</label>
                                     <input type="tel" id="qr-phone" class="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all" placeholder="+55 11 99999-9999" aria-label="Digite o telefone para gerar o QR Code">
                                 </div>
-                                
                                 <div id="wifi-input" class="input-group hidden space-y-3">
                                     <div>
                                         <label class="block text-white/80 text-sm font-medium mb-2" for="wifi-ssid">Nome da Rede (SSID)</label>
@@ -133,7 +119,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                
                                 <button id="generate-btn" class="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg" aria-label="Gerar QR Code">
                                     <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-6-3v4"></path>
@@ -143,12 +128,9 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- QR Code Display -->
                     <div class="space-y-6">
                         <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
                             <h3 class="text-xl font-semibold text-white mb-4">QR Code Gerado</h3>
-                            
                             <div id="qr-display" class="bg-white rounded-xl p-6 text-center min-h-[300px] flex items-center justify-center">
                                 <div class="text-gray-400">
                                     <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +139,6 @@
                                     <p class="text-sm">Seu QR Code aparecerá aqui</p>
                                 </div>
                             </div>
-                            
                             <div id="qr-actions" class="mt-4 space-y-3 hidden">
                                 <button id="download-btn" class="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-300" aria-label="Baixar QR Code como PNG">
                                     <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,14 +158,11 @@
                 </div>
             </div>
 
-            <!-- Reader Section -->
             <div id="reader-section" class="tab-content hidden">
                 <div class="max-w-2xl mx-auto">
                     <div class="glass-effect rounded-2xl p-6 custom-shadow slide-up">
                         <h3 class="text-xl font-semibold text-white mb-6 text-center">Ler QR Code</h3>
-                        
                         <div class="space-y-6">
-                            <!-- Camera Reader -->
                             <div>
                                 <h4 class="text-white/80 font-medium mb-3">📷 Usar Câmera</h4>
                                 <div class="relative">
@@ -203,8 +181,6 @@
                                     Iniciar Câmera
                                 </button>
                             </div>
-                            
-                            <!-- File Upload -->
                             <div class="border-t border-white/20 pt-6">
                                 <h4 class="text-white/80 font-medium mb-3">📁 Carregar Imagem</h4>
                                 <div class="relative">
@@ -219,8 +195,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Result -->
                             <div id="scan-result" class="hidden bg-white/10 rounded-xl p-4 border border-white/20">
                                 <h4 class="text-white font-medium mb-2">Resultado:</h4>
                                 <div id="result-content" class="bg-white/5 rounded-lg p-3 text-white/90 font-mono text-sm break-all" aria-live="polite"></div>
@@ -236,14 +210,10 @@
     </div>
 
     <script type="module">
-    // Importa a biblioteca QrScanner
     import QrScanner from './js/qr-scanner.min.js';
 
-    // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
-    
-    // Check for saved theme preference
     const savedTheme = JSON.parse(localStorage.getItem('darkMode') || 'false');
     if (savedTheme) {
         body.classList.add('dark');
@@ -255,7 +225,6 @@
         localStorage.setItem('darkMode', JSON.stringify(themeToggle.checked));
     });
     
-    // Tab Functionality
     const generateTab = document.getElementById('generate-tab');
     const readTab = document.getElementById('read-tab');
     const generatorSection = document.getElementById('generator-section');
@@ -279,7 +248,6 @@
         generatorSection.classList.add('hidden');
     });
     
-    // QR Type Selection
     const qrType = document.getElementById('qr-type');
     const inputGroups = document.querySelectorAll('.input-group');
     
@@ -288,7 +256,6 @@
         document.getElementById(`${qrType.value}-input`).classList.remove('hidden');
     });
     
-    // QR Code Generation
     const generateBtn = document.getElementById('generate-btn');
     const qrDisplay = document.getElementById('qr-display');
     const qrActions = document.getElementById('qr-actions');
@@ -341,7 +308,6 @@
         try {
             const resetLoading = showLoading(generateBtn, 'Gerando...');
             
-            // Verifica se a biblioteca QRCode está carregada
             if (typeof QRCode === 'undefined') {
                 showError('Erro: Biblioteca QRCode não carregada.');
                 console.error('QRCode library not found. Check CDN or local file.');
@@ -349,14 +315,12 @@
                 return;
             }
             
-            // Cria um contêiner para o QR code
             qrDisplay.innerHTML = '';
             const qrContainer = document.createElement('div');
             qrContainer.style.display = 'inline-block';
             qrDisplay.appendChild(qrContainer);
             
             console.log('Gerando QR Code para:', content);
-            // Usa a API do qrcodejs
             new QRCode(qrContainer, {
                 text: content,
                 width: 256,
@@ -366,7 +330,6 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
             
-            // Aguarda o carregamento completo da imagem gerada
             const qrImage = qrContainer.querySelector('img');
             if (!qrImage) {
                 showError('Erro: Imagem do QR Code não foi gerada.');
@@ -376,23 +339,20 @@
             }
             
             qrImage.onload = () => {
-                // Converte o QR code para canvas para download e cópia
                 const canvas = document.createElement('canvas');
                 canvas.width = 256;
                 canvas.height = 256;
                 const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#ffffff'; // Garante fundo branco
+                ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(qrImage, 0, 0, 256, 256);
                 
-                // Substitui o contêiner pelo canvas
                 qrDisplay.innerHTML = '';
                 qrDisplay.appendChild(canvas);
                 qrActions.classList.remove('hidden');
                 showSuccess('QR Code gerado com sucesso!');
                 console.log('QR Code gerado com sucesso');
                 
-                // Download
                 document.getElementById('download-btn').onclick = () => {
                     const link = document.createElement('a');
                     link.download = 'qrcode.png';
@@ -401,7 +361,6 @@
                     console.log('QR Code baixado como PNG');
                 };
                 
-                // Copiar
                 document.getElementById('copy-btn').onclick = async () => {
                     try {
                         const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -432,7 +391,6 @@
         }
     });
     
-    // QR Code Reader
     const startCameraBtn = document.getElementById('start-camera');
     const videoPreview = document.getElementById('video-preview');
     const cameraPlaceholder = document.getElementById('camera-placeholder');
@@ -446,6 +404,17 @@
     function showResult(result) {
         resultContent.textContent = result.data;
         scanResult.classList.remove('hidden');
+        
+        // Check if the result is a valid URL and open it automatically
+        const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]{2,}(\/[^\s]*)?$/i;
+        if (urlRegex.test(result.data)) {
+            let url = result.data;
+            if (!/^https?:\/\//i.test(url)) {
+                url = 'https://' + url;
+            }
+            window.open(url, '_blank');
+            console.log('URL detectada e aberta:', url);
+        }
         
         copyResultBtn.onclick = async () => {
             try {
@@ -479,7 +448,6 @@
                 return;
             }
             
-            // Verifica suporte para WebRTC
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 showError('Erro: Seu navegador não suporta acesso à câmera.');
                 console.error('WebRTC não suportado.');
@@ -499,7 +467,6 @@
             startCameraBtn.textContent = 'Parar Câmera';
             console.log('Câmera iniciada');
             
-            // Inicializa o scanner
             qrScanner = new QrScanner(videoPreview, result => {
                 showResult(result);
                 qrScanner.stop();
@@ -518,14 +485,13 @@
             }, {
                 returnDetailedScanResult: true,
                 highlightScanRegion: true,
-                highlightCodeOutline: false, // Desativado para evitar erros de renderização
+                highlightCodeOutline: false,
                 maxScansPerSecond: 10,
                 onDecodeError: (error) => {
                     console.warn('Erro ao decodificar QR Code:', error);
                 }
             });
             
-            // Verifica se há câmeras disponíveis
             QrScanner.hasCamera().then(hasCamera => {
                 if (!hasCamera) {
                     showError('Nenhuma câmera detectada.');
@@ -561,7 +527,6 @@
         }
     });
     
-    // File input for QR reading
     fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -584,7 +549,6 @@
         }
     });
     
-    // Drag and drop for file input
     const fileDropArea = fileInput.parentElement;
     
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -624,7 +588,6 @@
         }
     }
     
-    // Add floating elements animation
     function createFloatingElements() {
         const container = document.body;
         const shapes = ['◆', '●', '▲', '■', '★'];
@@ -633,17 +596,15 @@
             const element = document.createElement('div');
             element.className = 'fixed text-white/5 text-4xl pointer-events-none floating-animation';
             element.style.left = Math.random() * 100 + '%';
-            element.style.top = Math.random() * 100 + '%';
+            element.style.top = Math.random() *  100 + '%';
             element.style.animationDelay = Math.random() * 6 + 's';
             element.textContent = shapes[Math.floor(Math.random() * shapes.length)];
             container.appendChild(element);
         }
     }
     
-    // Initialize floating elements
     createFloatingElements();
     
-    // Add pulse effect to active elements
     function addPulseEffect() {
         const pulseElements = document.querySelectorAll('button, input, select, textarea');
         pulseElements.forEach(el => {
@@ -658,7 +619,6 @@
     
     addPulseEffect();
     
-    // Add smooth scrolling and page transitions
     document.addEventListener('DOMContentLoaded', () => {
         const sections = document.querySelectorAll('.slide-up');
         sections.forEach((section, index) => {
@@ -666,7 +626,6 @@
         });
     });
     
-    // Error handling for QR Scanner
     window.addEventListener('error', (e) => {
         if (e.message.includes('QrScanner')) {
             console.warn('Biblioteca QR Scanner não carregada. Verifique os arquivos js/qr-scanner.min.js e js/qr-scanner.worker.min.js.');
@@ -674,7 +633,6 @@
         }
     });
     
-    // Responsive adjustments
     function handleResize() {
         const isMobile = window.innerWidth < 768;
         if (isMobile && qrScanner) {
@@ -685,7 +643,6 @@
     window.addEventListener('resize', handleResize);
     handleResize();
     
-    // Add keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
             e.preventDefault();
@@ -701,7 +658,6 @@
         }
     });
     
-    // Add success animations
     function showSuccessAnimation(element) {
         element.style.transform = 'scale(1.05)';
         element.style.transition = 'transform 0.2s ease';
@@ -710,7 +666,6 @@
         }, 200);
     }
     
-    // Add loading states
     function showLoading(button, text = 'Carregando...') {
         const originalContent = button.innerHTML;
         button.innerHTML = `<div class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full inline-block mr-2"></div>${text}`;
@@ -722,7 +677,6 @@
         };
     }
     
-    // Enhanced error handling
     function showError(message, duration = 3000) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
@@ -756,6 +710,6 @@
             setTimeout(() => successDiv.remove(), 300);
         }, duration);
     }
-</script>
+    </script>
 </body>
 </html>
