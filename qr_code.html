@@ -320,9 +320,10 @@
         qrContainer.style.display = 'inline-block';
         qrDisplay.appendChild(qrContainer);
         
-        // Otimização para mobile: Reduzir tamanho e nível de correção
-        const qrSize = window.innerWidth < 768 ? 128 : 256; // 128px em mobile, 256px em desktop
-        const correctLevel = window.innerWidth < 768 ? QRCode.CorrectLevel.M : QRCode.CorrectLevel.H; // Nível M em mobile para maior velocidade
+        // Otimização para mobile: Ajuste dinâmico de tamanho e nível de correção
+        const isMobile = window.innerWidth < 768;
+        const qrSize = isMobile ? 128 : 256; // 128px em mobile, 256px em desktop
+        const correctLevel = isMobile ? QRCode.CorrectLevel.M : QRCode.CorrectLevel.H; // Nível M em mobile
         
         console.log('Gerando QR Code para:', content, 'Tamanho:', qrSize, 'Nível:', correctLevel);
         new QRCode(qrContainer, {
@@ -350,6 +351,15 @@
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(qrImage, 0, 0, qrSize, qrSize);
+            
+            // Tentar novamente com tamanho reduzido se falhar em mobile
+            if (isMobile && !ctx.getImageData(0, 0, 1, 1)) {
+                canvas.width = 96;
+                canvas.height = 96;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(qrImage, 0, 0, 96, 96);
+            }
             
             qrDisplay.innerHTML = '';
             qrDisplay.appendChild(canvas);
